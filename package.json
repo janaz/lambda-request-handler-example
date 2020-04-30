@@ -1,0 +1,11 @@
+{
+  "name": "lambda-request-handler-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tomasz Janowski <janaz9@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "lambda-request-handler": "^0.3.2"
+  }
+}
