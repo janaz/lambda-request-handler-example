@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -ex
+
+cd "$(dirname "$0")/.."
+
+docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
+  -v $(pwd):/app:ro -w /app \
+  realestate/stackup:1.2.1 \
+    lambda-request-handler-example-api up \
+    --region ap-southeast-2 \
+    --template /app/cloudformation/template-api.yaml

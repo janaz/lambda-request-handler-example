@@ -1,0 +1,3 @@
+---
+LambdaIAMRole: arn:aws:iam::356111732087:role/lambda-request-handler-example-lambda-role
+LambdaBucket: janaz-lambda-functions-ap-southeast-2

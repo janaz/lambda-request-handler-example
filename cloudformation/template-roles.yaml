@@ -1,0 +1,66 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Lambda Express Handler Demo App - Roles
+
+Resources:
+  DeploymentPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: lambda-request-handler-example-deployment
+      Users:
+        - example-app-deployment
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - cloudformation:*
+            Effect: Allow
+            Resource: arn:aws:cloudformation:ap-southeast-2:356111732087:stack/lambda-request-handler-example-app/*
+          - Action:
+              - lambda:*
+            Effect: Allow
+            Resource: arn:aws:lambda:ap-southeast-2:356111732087:function:lambda-request-handler-example-app-lambda
+          - Action:
+              - iam:PassRole
+            Effect: Allow
+            Resource: !GetAtt [LambdaRole, Arn]
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: arn:aws:s3:::janaz-lambda-functions-ap-southeast-2/lambda-request-handler-example*
+          - Action:
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: arn:aws:logs:ap-southeast-2:356111732087:log-group::log-stream:*
+          - Action:
+              - logs:*
+            Effect: Allow
+            Resource: arn:aws:logs:ap-southeast-2:356111732087:log-group:/aws/lambda/lambda-request-handler-example-app-lambda:log-stream:*
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: lambda-request-handler-example-lambda-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: PermitLambda
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action: # important for lambda logs to work
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Effect: Allow
+                Resource: '*'

@@ -1,0 +1,86 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Lambda Express Handler Demo App HTTP API Resources
+
+Parameters:
+  MyLambdaFunction:
+    Type: String
+    Description: Arn of the Lambda function
+    Default: arn:aws:lambda:ap-southeast-2:356111732087:function:lambda-request-handler-example-app-lambda
+
+Resources:
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Description: Lambda Express Handler Demo App
+      Name: !Sub '${AWS::StackName}-api'
+      ProtocolType: HTTP
+
+  Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Api
+      CredentialsArn: !GetAtt [ApiRole, Arn]
+      Description: Route to Lambda
+      IntegrationType: AWS_PROXY
+      PayloadFormatVersion: '1.0'
+      TimeoutInMillis: 1000
+      IntegrationUri: !Ref MyLambdaFunction
+      IntegrationMethod: ANY
+      ConnectionType: INTERNET
+
+  ApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: $default
+      AuthorizationType: NONE
+      Target: !Sub 'integrations/${Integration}'
+
+  MyStage:
+    Type: 'AWS::ApiGatewayV2::Stage'
+    Properties:
+      StageName: $default
+      DeploymentId: !Ref ApiDeployment
+      ApiId: !Ref Api
+
+  ApiDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+      - ApiRoute
+    Properties:
+      ApiId: !Ref Api
+
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: lambda-request-handler-example-api-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: PermitApiGateway
+          PolicyDocument:
+            Statement:
+              - Action:
+                  - iam:PassRole
+                Effect: Allow
+                Resource: '*'
+              - Action: # allow api gw to write to cloudwatch logs
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Effect: Allow
+                Resource: '*'
+              - Action: # allow api gw to call the lambda function
+                  - lambda:InvokeFunction
+                Effect: Allow
+                Resource: !Ref MyLambdaFunction

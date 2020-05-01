@@ -1,0 +1,42 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Express.js in Lambda
+
+Parameters:
+  LambdaBucket:
+    Type: String
+    Description: Bucket with the code
+  Version:
+    Type: String
+    Description: Verion of the app
+  LambdaZipName:
+    Type: String
+    Description: Lambda zip filename
+  LambdaIAMRole:
+    Type: String
+    Description: Lambda role arn
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref LambdaBucket
+        S3Key: !Ref LambdaZipName
+      Environment:
+        Variables:
+          VERSION: !Ref Version
+      FunctionName: !Sub '${AWS::StackName}-lambda'
+      Handler: src/handler.handler
+      MemorySize: '128'
+      Role: !Ref LambdaIAMRole
+      Runtime: nodejs12.x
+      Timeout: '3'
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: LambdaFunction
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${LambdaFunction}'
+      RetentionInDays: 3

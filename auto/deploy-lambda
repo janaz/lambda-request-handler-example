@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -ex
+
+cd "$(dirname "$0")/.."
+
+VERSION=${VERSION-dev}
+if [ "${GITHUB_ACTIONS}" = "true" ]; then
+  VERSION="${GITHUB_RUN_NUMBER}_${GITHUB_SHA}"
+fi
+
+ZIP_NAME="lambda-request-handler-example-${VERSION}.zip"
+
+docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
+  -v $(pwd):/app:ro -w /app \
+  realestate/stackup:1.2.1 \
+    lambda-request-handler-example-app up \
+    --region ap-southeast-2 \
+    --template /app/cloudformation/template-lambda.yaml \
+    --parameters /app/cloudformation/parameters.yaml \
+    -o Version=${VERSION} \
+    -o LambdaZipName=${ZIP_NAME}

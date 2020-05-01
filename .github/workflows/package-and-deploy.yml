@@ -41,6 +41,16 @@ jobs:
         echo "::set-env name=upload_url::$(cat upload-url/upload-url.txt)"
     - name: Build
       run: ./auto/package
+    - name: Upload to S3
+      run: ./auto/publish
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOY_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOY_AWS_SECRET_ACCESS_KEY }}
+    - name: Update Lambda
+      run: ./auto/deploy-lambda
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOY_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOY_AWS_SECRET_ACCESS_KEY }}
     - name: Upload Release Asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1.0.1

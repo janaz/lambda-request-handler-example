@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -ex
+
+cd "$(dirname "$0")/.."
+
+VERSION=${VERSION-dev}
+if [ "${GITHUB_ACTIONS}" = "true" ]; then
+  VERSION="${GITHUB_RUN_NUMBER}_${GITHUB_SHA}"
+fi
+
+ZIP_NAME="lambda-request-handler-example-${VERSION}.zip"
+
+cat dist/lambda.zip | docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
+  janaz/aws-cli:1.18.41-alpine \
+    s3 \
+    --region ap-southeast-2 \
+    cp - "s3://janaz-lambda-functions-ap-southeast-2/${ZIP_NAME}"
