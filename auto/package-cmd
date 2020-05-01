@@ -7,8 +7,8 @@ rm -rf stage/*
 rm -rf dist/*
 mkdir -p stage
 mkdir -p dist
-cp -a package.json package-lock.json src stage/
+cp -a package.json package-lock.json src public views stage/
 cd stage/
 npm ci --production
 rm -f package.json package-lock.json
-advzip -q -a -4 -p ../dist/lambda.zip *
+advzip -a -4 -p ../dist/lambda.zip *
