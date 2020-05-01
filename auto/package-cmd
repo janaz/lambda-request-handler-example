@@ -1,0 +1,14 @@
+#!/bin/sh
+set -ex
+
+cd "$(dirname "$0")/.."
+
+rm -rf stage/*
+rm -rf dist/*
+mkdir -p stage
+mkdir -p dist
+cp -a package.json package-lock.json src stage/
+cd stage/
+npm ci --production
+rm -f package.json package-lock.json
+advzip -a -4 -p ../dist/lambda.zip *

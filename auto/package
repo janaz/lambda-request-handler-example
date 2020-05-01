@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd "$(dirname "$0")/.."
+
+docker build -t lambda-request-handler-example .
+docker run --rm -v "$(pwd)":/app -w /app \
+  lambda-request-handler-example auto/package-cmd
