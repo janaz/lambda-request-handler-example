@@ -10,6 +10,6 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
-    "lambda-request-handler": "^0.3.2"
+    "lambda-request-handler": "^0.4.0"
   }
 }
