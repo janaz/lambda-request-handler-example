@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <title>lambda-request-handler</title>
+  </head>
+  <body style="margin:50px 120px;">
+    <h1>Welcome to Express.js app deployed to AWS Lambda and AWS API Gateway</h1>
+    <h2>Technology</h2>
+    <p>
+      AWS Lambda interface to the Express app has been provided by <a href="https://www.npmjs.com/package/lambda-request-handler">lambda-request-handler</a> module
+    </p>
+    <h2>Features</h2>
+      <ul>
+      <li>CORS</li>
+      <li>cookies</li>
+      <li>views</li>
+      <li>static content</li>
+      <li>JSON body parser</li>
+      <li>form request body parser</li>
+      <li>content compression</li>
+      </ul>
+    <h2>Endpoints</h2>
+    <p>
+    <a href="#">index</a> - This index page. It's using the EJS view feature.
+    </p>
+    <p>
+    <a href="cookies">cookies</a> - This page will set some cookies
+    </p>
+    <p>
+    <a href="inspect">inspect</a> - You can see here lots of details about the current request
+    </p>
+    <p>
+    <a href="echo">echo</a> - Returns back the request body. You probably want to send a JSON POST request to it
+    </p>
+    <p>
+    <a href="static/file.png">static/file.png</a> - Serves static binary files just like this one
+    </p>
+    <p>
+    <a href="static/big.html">static/big.html</a> - A large html file showcasing the content compression feature
+    </p>
+    <h2>AWS API Gateway frontentd</h2>
+    <p>
+    This app is fronted by API Gateway HTTP API and REST API
+    </p>
+    <p>
+    <a href="https://e9x33odhxl.execute-api.ap-southeast-2.amazonaws.com/app/">AWS API Gateway REST API</a>
+    </p>
+
+    <p>
+    <a href="https://op1vayx4e3.execute-api.ap-southeast-2.amazonaws.com/">AWS API Gateway HTTP API with payload version 1.0</a>
+    </p>
+
+    <p>
+    <a href="https://m3ud41apvf.execute-api.ap-southeast-2.amazonaws.com/">AWS API Gateway HTTP API with payload version 2.0</a>
+    </p>
+
+  </body>
+</html>

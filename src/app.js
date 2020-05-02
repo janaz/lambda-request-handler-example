@@ -15,6 +15,10 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+app.get('/', (_req, res) => {
+  res.render('index')
+})
+
 app.get('/inspect', (req, res) => {
   res.json({
     body: req.body,
@@ -43,10 +47,7 @@ app.get('/inspect', (req, res) => {
 })
 
 app.all('/echo', (req, res) => {
-  res.json({
-    hello: 'world',
-    version: process.env.VERSION
-  })
+  res.json({ body: req.body})
 })
 
 app.use("/static", compression({}), express.static(path.join(__dirname, '..', 'public')))
