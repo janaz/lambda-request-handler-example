@@ -27,6 +27,7 @@ Resources:
       Environment:
         Variables:
           VERSION: !Ref Version
+          NODE_ENV: production
       FunctionName: !Sub '${AWS::StackName}-lambda'
       Handler: src/handler.handler
       MemorySize: '128'
