@@ -1,0 +1,2 @@
+---
+MyLambdaFunction: arn:aws:lambda:ap-southeast-2:356111732087:function:lambda-request-handler-example-app-lambda

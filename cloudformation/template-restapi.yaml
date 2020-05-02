@@ -1,0 +1,118 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Lambda Express Handler Demo App HTTP API Resources
+
+Parameters:
+  MyLambdaFunction:
+    Type: String
+    Description: Arn of the Lambda function
+  Stage:
+    Type: String
+    Description: Arn of the Lambda function
+    Default: app
+
+Resources:
+  RestApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+      Path: /
+      Policies:
+        - PolicyName: PermitApiGateway
+          PolicyDocument:
+            Statement:
+              - Action:
+                  - iam:PassRole
+                Effect: Allow
+                Resource: '*'
+              - Action: # allow api gw to write to cloudwatch logs
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                  - logs:GetLogEvents
+                  - logs:FilterLogEvents
+                Effect: Allow
+                Resource: '*'
+              - Action: # allow api gw to call the lambda function
+                  - lambda:InvokeFunction
+                Effect: Allow
+                Resource: !Ref MyLambdaFunction
+
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub ${AWS::StackName}-api
+      BinaryMediaTypes:
+        - multipart/form-data
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Body:
+        openapi: 3.0.0
+        paths:
+          /:
+            x-amazon-apigateway-any-method:
+              x-amazon-apigateway-integration:
+                credentials: !GetAtt [RestApiRole, Arn]
+                httpMethod: POST
+                type: aws_proxy
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction}/invocations
+              responses:
+                "200":
+                  description: "root-response-descr"
+          "/{proxy+}":
+            x-amazon-apigateway-any-method:
+              x-amazon-apigateway-integration:
+                credentials: !GetAtt [RestApiRole, Arn]
+                httpMethod: POST
+                type: aws_proxy
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction}/invocations
+              responses:
+                "200":
+                  description: "proxy-reposnse-desc"
+        info:
+          version: "info-version"
+          title: "info-title"
+
+  RestApiDeployment20200502:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref RestApi
+
+  RestApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: !Ref Stage
+      Description: deployment stage
+      RestApiId:
+        Ref: RestApi
+      DeploymentId:
+        Ref: RestApiDeployment20200502
+      CacheClusterEnabled: false
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: ERROR
+          DataTraceEnabled: false
+          CachingEnabled: false
+          MetricsEnabled: true
+
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: RestApi
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub 'API-Gateway-Execution-Logs_${RestApi}/${Stage}'
+      RetentionInDays: 3

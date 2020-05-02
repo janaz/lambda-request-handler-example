@@ -7,6 +7,25 @@ cd "$(dirname "$0")/.."
 docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
   -v $(pwd):/app:ro -w /app \
   realestate/stackup:1.2.1 \
-    lambda-request-handler-example-api up \
+    lambda-request-handler-example-httpapiv1 up \
     --region ap-southeast-2 \
-    --template /app/cloudformation/template-api.yaml
+    --template /app/cloudformation/template-httpapi.yaml \
+    --parameters /app/cloudformation/parameters-api.yaml \
+    -o MyPayloadFormatVersion=1.0
+
+docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
+  -v $(pwd):/app:ro -w /app \
+  realestate/stackup:1.2.1 \
+    lambda-request-handler-example-httpapiv2 up \
+    --region ap-southeast-2 \
+    --template /app/cloudformation/template-httpapi.yaml \
+    --parameters /app/cloudformation/parameters-api.yaml \
+    -o MyPayloadFormatVersion=2.0
+
+docker run -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN --rm \
+  -v $(pwd):/app:ro -w /app \
+  realestate/stackup:1.2.1 \
+    lambda-request-handler-example-restapi up \
+    --region ap-southeast-2 \
+    --template /app/cloudformation/template-restapi.yaml \
+    --parameters /app/cloudformation/parameters-api.yaml
