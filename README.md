@@ -1,6 +1,6 @@
 ## Lambda Request Handler Demo
 
-This is a demo app that's using [`lambda-request-handler`](https://github.com/janaz/lambda-request-handler) adapter for deploying Express web applications to AWS Lambda and using API Gateway as the https endpoint. The tool supports many other NodeJS frameworks.
+This is a demo app that's using [`lambda-request-handler`](https://github.com/janaz/lambda-request-handler) adapter for deploying Express, Koa, and Hapi web applications to AWS Lambda and using API Gateway as the https endpoint. The tool supports many other NodeJS frameworks.
 
 ### Endpoints
 

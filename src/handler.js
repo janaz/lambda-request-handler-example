@@ -1,7 +1,8 @@
 const lambdaRequestHandler = require('lambda-request-handler')
-const app = require('./app')
+const getApp = require('./app')
 
-const h = lambdaRequestHandler(app);
+const h = lambdaRequestHandler.deferred(getApp);
+
 const handler = async (ev) => {
   console.log("REQ", JSON.stringify(ev))
   const res = await h(ev);
