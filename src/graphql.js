@@ -42,7 +42,10 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
-  playground: true,
+  playground: {
+    // support for Api REST API stage which is set to "app"
+    endpoint: '/app/graphql'
+  },
 });
 
 module.exports = server

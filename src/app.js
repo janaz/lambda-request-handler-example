@@ -72,6 +72,8 @@ const getApp = async () => {
   })
 
   graphqlServer.applyMiddleware({ app, path: '/graphql' })
+  // a hacky solution to support "app" stage
+  graphqlServer.applyMiddleware({ app, path: '/app/graphql' })
 
   app.use('/koa', koa)
   const hapiHandler = await hapi()
