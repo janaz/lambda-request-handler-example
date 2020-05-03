@@ -3,6 +3,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const compression = require('compression')
 const cors = require('cors')
+const graphqlServer = require('./graphql')
 
 const app = express()
 
@@ -67,5 +68,7 @@ app.get('/cookies', (_, res) => {
 app.get('/user/:id', (req, res) => {
   res.json({name: 'John', id: req.params.id})
 })
+
+graphqlServer.applyMiddleware({ app, path: '/graphql' })
 
 module.exports = app

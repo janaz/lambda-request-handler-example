@@ -3,8 +3,17 @@
   <head>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
     <title>lambda-request-handler</title>
+    <style>
+      body {
+        margin: 50px 120px;
+      }
+      code {
+        background-color: #eef;
+        padding: 2px;
+      }
+    </style>
   </head>
-  <body style="margin:50px 120px;">
+  <body>
     <h1>Welcome to Express.js app deployed to AWS Lambda and AWS API Gateway</h1>
     <h2>Technology</h2>
     <p>
@@ -12,6 +21,7 @@
     </p>
     <h2>Features</h2>
       <ul>
+      <li>Apollo Server</li>
       <li>CORS</li>
       <li>cookies</li>
       <li>views</li>
@@ -22,22 +32,25 @@
       </ul>
     <h2>Endpoints</h2>
     <p>
-    <a href="#">index</a> - This index page. It's using the EJS view feature.
+    <a href="#"><code>index</code></a> - This index page. It's using the EJS view feature.
     </p>
     <p>
-    <a href="cookies">cookies</a> - This page will set some cookies
+    <a href="cookies"><code>cookies</code></a> - This page will set some cookies
     </p>
     <p>
-    <a href="inspect">inspect</a> - You can see here lots of details about the current request
+    <a href="inspect"><code>inspect</code></a> - You can see here lots of details about the current request
     </p>
     <p>
-    <a href="echo">echo</a> - Returns back the request body. You probably want to send a JSON POST request to it
+    <a href="graphql"><code>graphql</code></a> - Opens the Apollo GraphQL Playground. An example query is <code>query{books{title}}</code>
     </p>
     <p>
-    <a href="static/file.png">static/file.png</a> - Serves static binary files just like this one
+    <a href="echo"><code>echo</code></a> - Returns back the request body. You probably want to send a JSON POST request to it
     </p>
     <p>
-    <a href="static/big.html">static/big.html</a> - A large html file showcasing the content compression feature
+    <a href="static/file.png"><code>static/file.png</code></a> - Serves static binary files just like this one
+    </p>
+    <p>
+    <a href="static/big.html"><code>static/big.html</code></a> - A large html file showcasing the content compression feature
     </p>
     <h2>AWS API Gateway frontentd</h2>
     <p>
