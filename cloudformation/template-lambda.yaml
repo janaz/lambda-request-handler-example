@@ -33,7 +33,7 @@ Resources:
       MemorySize: '128'
       Role: !Ref LambdaIAMRole
       Runtime: nodejs12.x
-      Timeout: '3'
+      Timeout: '10'
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
