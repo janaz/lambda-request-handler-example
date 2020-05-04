@@ -28,7 +28,7 @@ Resources:
       Description: Route to Lambda
       IntegrationType: AWS_PROXY
       PayloadFormatVersion: !Ref MyPayloadFormatVersion
-      TimeoutInMillis: 1000
+      TimeoutInMillis: 10000
       IntegrationUri: !Ref MyLambdaFunction
       IntegrationMethod: ANY
       ConnectionType: INTERNET
@@ -47,6 +47,9 @@ Resources:
       StageName: $default
       DeploymentId: !Ref ApiDeployment
       ApiId: !Ref Api
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
 
   ApiDeployment:
     Type: AWS::ApiGatewayV2::Deployment
