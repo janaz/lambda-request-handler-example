@@ -68,6 +68,7 @@ Resources:
                 credentials: !GetAtt [RestApiRole, Arn]
                 httpMethod: POST
                 type: aws_proxy
+                timeoutInMillis: 10000
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction}/invocations
               responses:
                 "200":
@@ -78,6 +79,7 @@ Resources:
                 credentials: !GetAtt [RestApiRole, Arn]
                 httpMethod: POST
                 type: aws_proxy
+                timeoutInMillis: 10000
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction}/invocations
               responses:
                 "200":
@@ -108,6 +110,18 @@ Resources:
           DataTraceEnabled: false
           CachingEnabled: false
           MetricsEnabled: true
+
+  UsagePlan:
+    Type: 'AWS::ApiGateway::UsagePlan'
+    Properties:
+      ApiStages:
+        - ApiId: !Ref RestApi
+          Stage: !Ref RestApiStage
+      Description: Usage plan
+      Throttle:
+        BurstLimit: 20
+        RateLimit: 10
+      UsagePlanName: MyPlan
 
   ApiLogGroup:
     Type: AWS::Logs::LogGroup
