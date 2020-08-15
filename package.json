@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "koa": "^2.13.0",
-    "koa-router": "^9.1.0",
+    "koa-router": "^9.4.0",
     "lambda-request-handler": "^0.4.4"
   }
 }
