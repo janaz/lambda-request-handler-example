@@ -10,7 +10,7 @@ const koa = new Koa();
 
 const router = new Router();
 
-router.all('*', ctx => {
+router.all('/', ctx => {
   ctx.body = "Hello from KOA!"
 });
 
