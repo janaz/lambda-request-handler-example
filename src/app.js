@@ -6,6 +6,7 @@ const cors = require('cors')
 const graphqlServer = require('./graphql')
 const koa = require('./koa/app')
 const hapi = require('./hapi/app')
+const fastify = require('./fastify/app')
 const app = express()
 
 const getApp = async () => {
@@ -78,6 +79,9 @@ const getApp = async () => {
   app.use('/koa', koa)
   const hapiHandler = await hapi()
   app.use('/hapi', hapiHandler)
+
+  const fastifyHandler = await fastify()
+  app.use('/fastify', fastifyHandler)
 
   return app
 }
