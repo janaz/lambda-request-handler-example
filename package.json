@@ -16,6 +16,6 @@
     "graphql": "^15.4.0",
     "koa": "^2.13.0",
     "koa-router": "^10.0.0",
-    "lambda-request-handler": "^0.5.0"
+    "lambda-request-handler": "0.5.1-alpha1"
   }
 }
